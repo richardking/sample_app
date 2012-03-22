@@ -35,6 +35,15 @@ describe "UserPages" do
         fill_in "Confirmation", with: "foobar"
       end
       
+      describe "after saving the user" do
+        before { click_button "Create my account" }
+        let(:user) {User.find_by_email('example@railstutorial.org')}
+        
+        it { should have_selector('title', text: user.name)}
+        it { should have_selector('div.alert.alert-success', text: 'Welcome')}
+        it { should have_link('Sign out', href: signout_path)}
+      end
+      
       it "should create user account" do
         expect { click_button "Create my account"}.to change(User, :count).by(1)
       end
